@@ -1,0 +1,16 @@
+BANGLA COMPILER - FORMAL GRAMMAR (BNF)
+
+PROJECT TYPE: Context-Free Grammar (CFG)
+PARSING TECHNIQUE: Recursive Descent (Top-Down)
+
+
+Grammar Rules: 
+
+<Statement>    ::= <DataType> <Identifier> [ "=" <Expression> ] ";"
+<DataType>     ::= "সংখ্যা" | "লেখা"
+<Expression>   ::= <Term> { ("+" | "-") <Term> }
+<Term>         ::= <Factor> { ("*" | "/") <Factor> }
+<Factor>       ::= <Number> | <StringLiteral>
+
+Note: This grammar ensures Operator Precedence 
+(Multiplication/Division before Addition/Subtraction).

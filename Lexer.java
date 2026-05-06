@@ -18,7 +18,7 @@ public class Lexer {
                 continue;
             }
 
-            // ১. সংখ্যা চেনা
+          
             if (Character.isDigit(current)) {
                 StringBuilder number = new StringBuilder();
                 while (pos < length && Character.isDigit(input.charAt(pos))) {
@@ -29,7 +29,7 @@ public class Lexer {
                 continue;
             }
 
-            // ২. স্ট্রিং বা 'লেখা'র ভ্যালু চেনা (" ")
+    
             if (current == '"') {
                 StringBuilder str = new StringBuilder();
                 pos++; 
@@ -42,7 +42,7 @@ public class Lexer {
                 continue;
             }
 
-            // ৩. বাংলা কি-ওয়ার্ড (সংখ্যা, লেখা) এবং ভেরিয়েবল নাম চেনা
+
             if (!Character.isWhitespace(current) && !Character.isDigit(current) && 
                 "=+;-/*;\"".indexOf(current) == -1) {
                 StringBuilder word = new StringBuilder();
@@ -61,7 +61,6 @@ public class Lexer {
                 continue;
             }
 
-            // ৪. অপারেটর এবং সেমিকোলন
             if (current == '=') tokens.add(new Token(TokenType.ASSIGN, "="));
             else if (current == '+') tokens.add(new Token(TokenType.PLUS, "+"));
             else if (current == '-') tokens.add(new Token(TokenType.MINUS, "-"));

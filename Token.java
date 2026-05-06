@@ -1,13 +1,12 @@
-// Token.java
 enum TokenType {
-    DATA_TYPE,      // সংখ্যা, লেখা
-    IDENTIFIER,    // ক, খ, নাম
-    ASSIGN,        // =
-    NUMBER,        // ১০, ২০
-    STRING_LITERAL, // "আয়শা" (এটি আপনার কোডে মিসিং ছিল)
-    PLUS, MINUS, MULTIPLY, DIVIDE, // +, -, *, /
-    SEMICOLON,     // ;
-    EOF            // এন্ড অফ ফাইল
+    DATA_TYPE,   
+    IDENTIFIER,    
+    ASSIGN,     
+    NUMBER,       
+    STRING_LITERAL,
+    PLUS, MINUS, MULTIPLY, DIVIDE, 
+    SEMICOLON,  
+    EOF           
 }
 
 public class Token {

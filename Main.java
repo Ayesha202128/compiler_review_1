@@ -5,7 +5,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         String fileName = "test_code.txt"; 
-        SymbolTable symbolTable = new SymbolTable(); // একটি কমন সিম্বল টেবিল
+        SymbolTable symbolTable = new SymbolTable(); 
         
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8))) {
@@ -20,17 +20,22 @@ public class Main {
                 
      
 
-                // ২. লেক্সার দিয়ে টোকেন তৈরি
+       
 Lexer lexer = new Lexer(line);
 List<Token> tokens = lexer.tokenize();
 
-// এখানে পরিবর্তন করুন: টোকেনগুলো এক লাইনে না দেখিয়ে লুপ চালিয়ে নিচে নিচে প্রিন্ট করুন
-System.out.println("Tokens generated:");
+
+System.out.println("Tokens generated:");cd C:\Users\Aisha\Desktop\compiler2
+
+
+
+
+______uporer path ta amr laptop er path .mane amr laptop er j folder e ai project er kaj korci oita but apnara apnader path dibe cd er por
 for (Token token : tokens) {
     System.out.println("  -> " + token); 
 }
 
-// ৩. পার্সার কল করা (আগের মতোই থাকবে)
+
 try {
     Parser parser = new Parser(tokens, symbolTable);
     parser.parse(); 
@@ -39,7 +44,7 @@ try {
 }
             }
             
-            // ৩. শেষে সিম্বল টেবিল দেখানো (রিভিউ ১ এর জন্য বোনাস পয়েন্ট)
+        
             symbolTable.printTable();
             System.out.println("\n--- Compilation Finished ---");
             

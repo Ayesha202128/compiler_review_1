@@ -11,6 +11,7 @@ public class Parser {
     }
 
     private Token currentToken() {
+        if (pos >= tokens.size()) return tokens.get(tokens.size() - 1);
         return tokens.get(pos);
     }
 
@@ -28,43 +29,108 @@ public class Parser {
         }
     }
 
+    private void parseStatement() {
+        if (currentToken().getType() == TokenType.DATA_TYPE) {
+            String type = currentToken().getValue(); 
+            consume(TokenType.DATA_TYPE);
 
+            String varName = currentToken().getValue(); 
+            consume(TokenType.IDENTIFIER);
 
-private void parseStatement() {
-    if (currentToken().getType() == TokenType.DATA_TYPE) {
-        String type = currentToken().getValue(); 
-        consume(TokenType.DATA_TYPE);
+         
+            if (symbolTable.exists(varName)) {
+                throw new RuntimeException("Semantic Error: Variable '" + varName + "' already declared.");
+            }
+            symbolTable.add(varName, type);
 
-        String varName = currentToken().getValue(); 
-        consume(TokenType.IDENTIFIER);
-
-        if (symbolTable.exists(varName)) {
-            throw new RuntimeException("Semantic Error: Variable '" + varName + "' already declared.");
-        }
-        symbolTable.add(varName, type);
-
-        if (currentToken().getType() == TokenType.ASSIGN) {
-            consume(TokenType.ASSIGN);
-            
-            // টাইপ অনুযায়ী ভ্যালু প্রসেস করা
-            if (type.equals("সংখ্যা")) {
-                // সংখ্যা বা গাণিতিক হিসাব থাকলে সেটি আগে শেষ করবে
-                handleNumericExpression(varName);
-            } else if (type.equals("লেখা")) {
-                // লেখার মান (String) থাকলে সেটি আগে গ্রহণ করবে
-                if (currentToken().getType() == TokenType.STRING_LITERAL) {
-                    consume(TokenType.STRING_LITERAL); // এটিই আপনার এরর ফিক্স করবে
-                    System.out.println("Success: String variable '" + varName + "' assigned.");
-                } else {
-                    throw new RuntimeException("Type Error: 'লেখা' টাইপ ভেরিয়েবলে টেক্সট প্রয়োজন।");
+     
+            if (currentToken().getType() == TokenType.ASSIGN) {
+                consume(TokenType.ASSIGN);
+                
+                if (type.equals("সংখ্যা")) {
+                    handleNumericExpression(varName);
+                } else if (type.equals("লেখা")) {
+                    handleStringExpression(varName);
                 }
             }
-        }
-        
-        // সব ভ্যালু গ্রহণ করার পর এখন সে সেমিকোলন খুঁজবে
-        consume(TokenType.SEMICOLON); 
-    } else {
-        pos++;
-    }
+            
+            consume(TokenType.SEMICOLON); 
+        }else {
+    throw new RuntimeException("Syntax Error: Unexpected token " + currentToken().getValue());
 }
+    }
+
+ 
+
+    private void handleNumericExpression(String varName) {
+     
+        if (currentToken().getType() == TokenType.STRING_LITERAL) {
+            throw new RuntimeException("Type Error: 'সংখ্যা' টাইপ ভেরিয়েবলে টেক্সট রাখা সম্ভব নয়।");
+        }
+
+
+        int finalResult = parseExpression(); 
+        
+        System.out.println("Success: '" + varName + "' calculated result: " + finalResult);
+    }
+
+  
+    private int parseExpression() {
+        int result = parseTerm();
+        while (currentToken().getType() == TokenType.PLUS || currentToken().getType() == TokenType.MINUS) {
+            TokenType op = currentToken().getType();
+consume(op);
+            int nextVal = parseTerm();
+            
+            if (op == TokenType.PLUS) result += nextVal;
+            else result -= nextVal;
+        }
+        return result;
+    }
+
+  
+    private int parseTerm() {
+        int result = parseFactor(); 
+
+        while (currentToken().getType() == TokenType.MULTIPLY || currentToken().getType() == TokenType.DIVIDE) {
+            TokenType op = currentToken().getType();
+consume(op);
+            int nextVal = parseFactor();
+            
+            if (op == TokenType.MULTIPLY) result *= nextVal;
+            else {
+                if (nextVal == 0) throw new RuntimeException("Runtime Error: Division by zero!");
+                result /= nextVal;
+            }
+        }
+        return result;
+    }
+
+   
+  private int parseFactor() {
+
+
+    if (currentToken().getType() != TokenType.NUMBER) {
+        throw new RuntimeException("Type Error: সংখ্যা প্রত্যাশিত।");
+    }
+
+    int val = Integer.parseInt(currentToken().getValue());
+    consume(TokenType.NUMBER);
+
+    return val;
+}
+
+    private void handleStringExpression(String varName) {
+        if (currentToken().getType() == TokenType.NUMBER) {
+            throw new RuntimeException("Type Error: 'লেখা' টাইপ ভেরিয়েবলে সরাসরি নম্বর রাখা সম্ভব নয়।");
+        }
+
+        if (currentToken().getType() == TokenType.STRING_LITERAL) {
+            String value = currentToken().getValue();
+            consume(TokenType.STRING_LITERAL);
+            System.out.println("Success: '" + varName + "' assigned string: \"" + value + "\"");
+        } else {
+            throw new RuntimeException("Type Error: 'লেখা' টাইপে উদ্ধৃতি চিহ্নসহ (\" \") টেক্সট দিতে হবে।");
+        }
+    }
 }
