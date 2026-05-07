@@ -25,12 +25,9 @@ Lexer lexer = new Lexer(line);
 List<Token> tokens = lexer.tokenize();
 
 
-System.out.println("Tokens generated:");cd C:\Users\Aisha\Desktop\compiler2
+System.out.println("Tokens generated:");
 
 
-
-
-______uporer path ta amr laptop er path .mane amr laptop er j folder e ai project er kaj korci oita but apnara apnader path dibe cd er por
 for (Token token : tokens) {
     System.out.println("  -> " + token); 
 }

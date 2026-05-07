@@ -51,7 +51,7 @@ public class Parser {
                     handleNumericExpression(varName);
                 } else if (type.equals("লেখা")) {
                     handleStringExpression(varName);
-                }
+                };
             }
             
             consume(TokenType.SEMICOLON); 
